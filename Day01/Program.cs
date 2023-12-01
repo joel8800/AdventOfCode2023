@@ -7,73 +7,54 @@ string[] input = FileUtil.ReadFileByLine("input.txt");
 int part1 = 0;
 int part2 = 0;
 
+// get all the digits in the line, combine the first and last digits,
+// and keep a running total
 foreach (string line in input)
 {
-    int first = 0;
-    int last = 0;
-
-    for (int i = 0; i < line.Length; i++)
-    {
-        first = IsDigit(line.Substring(i));
-        if (first != -1)
-            break;
-    }
-
-    for (int i = line.Length - 1; i >= 0; i--)
-    {
-        last = IsDigit(line.Substring(i));
-        if (last != -1)
-            break;
-    }
-
-    part1 += (first * 10) + last;
+    List<char> digits = line.Where(c => char.IsDigit(c)).ToList();
+    
+    part1 += int.Parse(digits.First().ToString() + digits.Last().ToString());
 }
 
-Console.WriteLine(part1);
+Console.WriteLine($"Part1: {part1}");
 
+//----------------------------------------------------------------------------
 
 foreach (string line in input)
 {
-    int digits = 0;
     int first = 0;
     int last = 0;
+
+    // search from start of line
     for (int i = 0; i < line.Length; i++)
     {
-        first = IsReal(line.Substring(i));
+        first = GetRealDigit(line.Substring(i));
         if (first != -1)
             break;
     }
 
+    // search from end of line
     for (int i = line.Length - 1; i >= 0 ; i--)
     {
-        last = IsReal(line.Substring(i));
+        last = GetRealDigit(line.Substring(i));
         if (last != -1)
             break;
     }
 
-    digits = (first * 10) + last;
-    part2 += digits;
+    part2 += (first * 10) + last;
 }
 
-Console.WriteLine(part2);
+Console.WriteLine($"Part2: {part2}");
 
 //============================================================================
 
-int IsDigit(string line)
+static int GetRealDigit(string line)
 {
-    int digit = -1;
-
-    if (char.IsDigit(line[0]))
-        digit = int.Parse(line[0].ToString());
-
-    return digit;
-}
-
-int IsReal(string line)
-{
+    // return if first char is a digit
     if (char.IsDigit(line[0]))
         return int.Parse(line[0].ToString());
 
+    // check to see if digit is spelled out
     if (line.StartsWith("one"))
         return 1;
     if (line.StartsWith("two"))
