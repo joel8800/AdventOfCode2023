@@ -11,4 +11,13 @@
     <ProjectReference Include="..\AoCUtils\AoCUtils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="inputSample.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="input.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
