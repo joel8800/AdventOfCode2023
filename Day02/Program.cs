@@ -8,16 +8,12 @@ const int R = 12;
 const int G = 13;
 const int B = 14;
 
-int r, g, b;
-
-int total = 0;
-int power = 0;
+int r, g, b, total = 0, power = 0;
 
 foreach (string line in input)
 {
     string[] parts = line.Split(':');
     string[] gameID = parts[0].Split();
-    int ID = int.Parse(gameID[1]);
     string[] rounds = parts[1].Split(';');
 
     int maxR = 0, maxG = 0, maxB = 0;
@@ -25,21 +21,18 @@ foreach (string line in input)
 
     foreach (string round in rounds)
     {
-
         (r, g, b) = CheckRound(round);
+
+        if (r > R || g > G || b > B)
+            possible = false;
 
         maxR = Math.Max(maxR, r);
         maxG = Math.Max(maxG, g);
         maxB = Math.Max(maxB, b);
-
-        Console.WriteLine($"Rnd {ID}: {r} {g} {b} {power}");
-
-        if (r > R || g > G || b > B)
-            possible = false;
     }
 
     if (possible)
-        total += ID;
+        total += int.Parse(gameID[1]);
 
     power += maxR * maxG * maxB;
 }
@@ -47,9 +40,9 @@ foreach (string line in input)
 Console.WriteLine($"Part1: {total}");
 Console.WriteLine($"Part2: {power}");
 
+//============================================================================
 
-
-(int r, int g, int b) CheckRound(string round)
+static (int r, int g, int b) CheckRound(string round)
 {
     int r = 0, g = 0, b = 0;
 
