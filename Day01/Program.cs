@@ -1,4 +1,5 @@
 ﻿using AoCUtils;
+using System.Text.RegularExpressions;
 
 Console.WriteLine("Day01: Trebuchet?!");
 
@@ -20,29 +21,46 @@ Console.WriteLine($"Part1: {part1}");
 
 //----------------------------------------------------------------------------
 
+// a cooler way to extract all the numbers, regular expressions
+// pattern to find any of the spelled out numbers or single digit
+Regex re = new(@"(?=(one|two|three|four|five|six|seven|eight|nine|\d))");
+
+// get all valid numbers into a list and take first and last
 foreach (string line in input)
 {
-    int first = 0;
-    int last = 0;
+    MatchCollection mc = re.Matches(line);
+    List<string> numbers = mc.Select(x => x.Groups[1].Value).ToList();
 
-    // search from start of line
-    for (int i = 0; i < line.Length; i++)
-    {
-        first = GetRealDigit(line.Substring(i));
-        if (first != -1)
-            break;
-    }
+    int tens = GetRealDigit(numbers.First());
+    int ones = GetRealDigit(numbers.Last());
 
-    // search from end of line
-    for (int i = line.Length - 1; i >= 0 ; i--)
-    {
-        last = GetRealDigit(line.Substring(i));
-        if (last != -1)
-            break;
-    }
-
-    part2 += (first * 10) + last;
+    part2 += (tens * 10) + ones;
 }
+
+
+//foreach (string line in input)
+//{
+//    int first = 0;
+//    int last = 0;
+
+//    // search from start of line
+//    for (int i = 0; i < line.Length; i++)
+//    {
+//        first = GetRealDigit(line.Substring(i));
+//        if (first != -1)
+//            break;
+//    }
+
+//    // search from end of line
+//    for (int i = line.Length - 1; i >= 0 ; i--)
+//    {
+//        last = GetRealDigit(line.Substring(i));
+//        if (last != -1)
+//            break;
+//    }
+
+//    part2 += (first * 10) + last;
+//}
 
 Console.WriteLine($"Part2: {part2}");
 
