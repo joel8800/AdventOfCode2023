@@ -1,7 +1,7 @@
 ﻿using AoCUtils;
 using System.Text.RegularExpressions;
 
-Console.WriteLine("Day04: ");
+Console.WriteLine("Day04: Scratchcards ");
 
 string[] input = FileUtil.ReadFileByLine("input.txt");
 
