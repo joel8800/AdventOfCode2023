@@ -4,7 +4,7 @@
 
 #### Progress:
 <img style="display: block; margin-left: auto; margin-right: auto; width: 100%;"
-	src="https://progress-bar.dev/9/?scale=50&title=StarsCollected&width=700&suffix=/50"
+	src="https://progress-bar.dev/11/?scale=50&title=StarsCollected&width=700&suffix=/50"
 	alt="Progress Bar">
 </img>
 | Day | Status | Source | Solution Notes |
@@ -14,4 +14,5 @@
  | [Day 03:  Gear Ratios](https://adventofcode.com/2023/day/3) | :star::star: | [Solution](./Day03/Program.cs) |  |
  | [Day 04:  Scratchcards](https://adventofcode.com/2023/day/4) | :star::star: | [Solution](./Day04/Program.cs) |  |
  | [Day 05:  If You Give A Seed A Fertilizer](https://adventofcode.com/2023/day/5) | :star: | [Solution](./Day05/Program.cs) |  |
+ | [Day 06:  Wait For It](https://adventofcode.com/2023/day/6) | :star::star: | [Solution](./Day06/Program.cs) |  |
 
