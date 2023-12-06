@@ -15,11 +15,11 @@ foreach (string line in input)
 {
     string card = Regex.Replace(line, @"\s+", " ");
     string[] parts = card.Split([':', '|']);
-    string[] cardInfo = parts[0].Split(' ');
     string[] winners = parts[1].Split(' ', StringSplitOptions.RemoveEmptyEntries);
     string[] myNumbers = parts[2].Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-    int ID = int.Parse(cardInfo[1]);
+    int ID = int.Parse(parts[0].Split()[1]);
+    
     int matches = 0;
     foreach (string num in winners)
     {
@@ -27,8 +27,7 @@ foreach (string line in input)
             matches++;
     }
 
-    int cardScore = (matches > 0) ? Convert.ToInt32(Math.Pow(2, matches - 1)) : 0;
-    totalPart1 += cardScore;
+    totalPart1 += (int)Convert.ToInt32(Math.Pow(2, matches - 1));
 
     // keep track of card matches per card for part 2
     scores.Add(ID, matches);
