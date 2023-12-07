@@ -85,6 +85,7 @@ foreach (NumRange nr in seedRanges)
     Console.WriteLine(nr.ToString());
 }
 
+Console.WriteLine("=====================================");
 List<NumRange> sr1 = maps[0].Translate(seedRanges);
 foreach (NumRange nr in sr1) { Console.WriteLine("sr1: " + nr.ToString()); }
 Console.WriteLine("-------------------------------------");
@@ -105,11 +106,14 @@ foreach (NumRange nr in sr6) { Console.WriteLine("sr6: " + nr.ToString()); }
 Console.WriteLine("-------------------------------------");
 List<NumRange> sr7 = maps[6].Translate(sr6);
 foreach (NumRange nr in sr7) { Console.WriteLine("sr7: " + nr.ToString()); }
-Console.WriteLine("-------------------------------------");
-
+Console.WriteLine("=====================================");
 
 long minVal = sr7.Select(x => x.st).Min();
-Console.WriteLine($"Part2: {minVal}");// {locationsPt2.Min()}");
-Console.WriteLine();
+Console.WriteLine($"Part2: {minVal}"); //50855035
 
 //============================================================================
+
+int FindOverlapping(int start1, int end1, int start2, int end2)
+{
+    return Math.Max(0, Math.Min(end1, end2) - Math.Max(start1, start2) + 1);
+}

@@ -64,11 +64,12 @@
             for (int i = 0; i < ranges.Count; i++) 
             {
                 bool outputAdded = false;
-                Console.WriteLine($"search  {ranges[i]}");
+                Console.WriteLine($"{ranges[i]} -- seed range[{i}]");
 
                 // find range where start point is
                 for (int j = 0; j < InputRanges.Count; j++)
                 {
+                    Console.WriteLine($"{InputRanges[j]} -- looking in this range[{j}]");
                     // start point is in range
                     if (InRange(ranges[i].st, InputRanges[j]))
                     {
@@ -95,7 +96,7 @@
                 if (outputAdded == false)
                 {
                     output.Add(ranges[i]);
-                    Console.WriteLine($"--  none[{ranges[i].st,11}..{ranges[i].sp,11}] added, no offset applied");
+                    Console.WriteLine($"[{ranges[i].st,11}..{ranges[i].sp,11}] --  none added, no offset applied");
                 }
             }
 
@@ -117,7 +118,7 @@
                 st = range.st + InputRanges[inRangeIdx].offset,
                 sp = range.sp + InputRanges[inRangeIdx].offset
             };
-            Console.WriteLine($"--  full[{outRange.st,11}..{outRange.sp,11}] added, offset {InputRanges[inRangeIdx].offset,11} applied");
+            Console.WriteLine($"[{outRange.st,11}..{outRange.sp,11}] --  full added, offset {InputRanges[inRangeIdx].offset,11} applied");
             return outRange;
         }
 
@@ -130,7 +131,7 @@
                 st = range.st + InputRanges[inRangeIdx].offset,
                 sp = InputRanges[inRangeIdx].sp + InputRanges[inRangeIdx].offset
             };
-            Console.WriteLine($"-- lower[{lowerRange.st,11}..{lowerRange.sp,11}] added, offset {InputRanges[inRangeIdx].offset,11} applied");
+            Console.WriteLine($"[{lowerRange.st,11}..{lowerRange.sp,11}] -- lower added, offset {InputRanges[inRangeIdx].offset,11} applied");
             outRanges.Add(lowerRange);
 
             // create new range for the upper part
@@ -142,13 +143,13 @@
                 newRange.st += InputRanges[inRangeIdx + 1].offset;
                 newRange.sp += InputRanges[inRangeIdx + 1].offset;
                 outRanges.Add(newRange);
-                Console.WriteLine($"-- upper[{newRange.st,11}..{newRange.sp,11}] added, offset {InputRanges[inRangeIdx + 1].offset,11} applied");
+                Console.WriteLine($"[{newRange.st,11}..{newRange.sp,11}] -- upper added, offset {InputRanges[inRangeIdx + 1].offset,11} applied");
             }
             else
             {
                 // not in next range so return as is
                 outRanges.Add(newRange);
-                Console.WriteLine($"-- upper[{newRange.st,11}..{newRange.sp,11}] added, not in next range");
+                Console.WriteLine($"[{newRange.st,11}..{newRange.sp,11}] -- upperadded, not in next range");
             }
 
 
