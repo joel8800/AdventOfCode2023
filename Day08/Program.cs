@@ -2,7 +2,7 @@
 using Day08;
 using System.Text.RegularExpressions;
 
-Console.WriteLine("Day08: ");
+Console.WriteLine("Day08: Haunted Wasteland");
 
 string[] input = FileUtil.ReadFileByBlock("input.txt");
 string[] nodeText = input[1].Split(Environment.NewLine);
