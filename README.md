@@ -4,7 +4,7 @@
 
 #### Progress:
 <img style="display: block; margin-left: auto; margin-right: auto; width: 100%;"
-	src="https://progress-bar.dev/13/?scale=50&title=StarsCollected&width=700&suffix=/50"
+	src="https://progress-bar.dev/17/?scale=50&title=StarsCollected&width=700&suffix=/50"
 	alt="Progress Bar">
 </img>
 | Day | Status | Source | Solution Notes |
@@ -16,4 +16,6 @@
  | [Day 05:  If You Give A Seed A Fertilizer](https://adventofcode.com/2023/day/5) | :star: | [Solution](./Day05/Program.cs) |  |
  | [Day 06:  Wait For It](https://adventofcode.com/2023/day/6) | :star::star: | [Solution](./Day06/Program.cs) |  |
  | [Day 07:  Camel Cards](https://adventofcode.com/2023/day/7) | :star::star: | [Solution](./Day07/Program.cs) |  |
+ | [Day 08:  Haunted Wasteland](https://adventofcode.com/2023/day/8) | :star::star: | [Solution](./Day08/Program.cs) |  |
+ | [Day 09:  Mirage Maintenance](https://adventofcode.com/2023/day/9) | :star::star: | [Solution](./Day09/Program.cs) |  |
 
