@@ -44,7 +44,7 @@ for (int i = 0; i < galsPt1.Count - 1; i++)
     for (int j = i + 1; j < galsPt1.Count; j++)
         distancesPt1.Add(Manhattan(galsPt1[i], galsPt1[j]));
 
-Console.WriteLine($"Part1: {distancesPt1.Sum()}");   //9418609
+Console.WriteLine($"Part1: {distancesPt1.Sum()}");
 
 //----------------------------------------------------------------------------
 
@@ -59,9 +59,7 @@ for (int i = 0; i < galsPt2.Count - 1; i++)
     for (int j = i + 1; j < galsPt2.Count; j++)
         distancesPt2.Add(Manhattan(galsPt2[i], galsPt2[j]));
 
-long sum = distancesPt2.Select(d => Convert.ToInt64(d)).Sum();
-
-Console.WriteLine($"Part2: {distancesPt2.Select(d => Convert.ToInt64(d)).Sum()}");  // 593821230983
+Console.WriteLine($"Part2: {distancesPt2.Select(d => Convert.ToInt64(d)).Sum()}");
 
 //============================================================================
 
