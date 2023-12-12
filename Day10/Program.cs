@@ -82,14 +82,40 @@ Console.WriteLine($"Part1: {visited.Count / 2}"); // 6815
 
 //----------------------------------------------------------------------------
 
+// replace S with its actual char
+char st = GetCharOfStart(input, start);
+input[start.Row][start.Col] = st;
+
+List <(int r, int c)> outside = [];
+
+for (int r = 0; r < input.Count; r++)
+{
+    for (int c = 0; c < input[0].Count; c++)
+    {
+        char ch = input[r][c];
+
+        
+    }
+}
 
 
-Console.WriteLine($"Part2: {0}");   // 269
+
+
+
+
+
+Console.WriteLine($"grid has {input.Count * input[0].Count} locations");
+Console.WriteLine($"loop has {visited.Count} locations");
+Console.WriteLine($"outsides {outside.Count} locations");
+Console.WriteLine($"Part2: {(input.Count * input[0].Count - visited.Count - outside.Count)}");   // 269
 
 //============================================================================
 
-bool InBounds(List<List<char>> grid, int row, int col)
+bool InInside(List<List<char>> grid, List<Node> visited, int row, int col)
 {
+    List<Node> inLoop = visited.Where(n => n.Row == row).ToList();
+
+
     if (row >= 0 && row < grid.Count && col >= 0 && col < grid[row].Count)
         return true;
     else
@@ -122,4 +148,24 @@ Node FindStart(List<List<char>> grid)
     }
 
     return new Node(grid[r][c], r, c);
+}
+
+char GetCharOfStart(List<List<char>> grid, Node st)
+{
+    string possibles = "|-JL7F";
+    
+    if ("|7F".Contains(grid[st.Row - 1][st.Col]))
+        possibles = possibles.Replace("-", "").Replace("7", "").Replace("F", "");
+
+    if ("|JL".Contains(grid[st.Row + 1][st.Col]))
+        possibles = possibles.Replace("-", "").Replace("J", "").Replace("L", "");
+
+    if ("-7J".Contains(grid[st.Row][st.Col + 1]))
+        possibles = possibles.Replace("|", "").Replace("7", "").Replace("J", "");
+
+    if ("-FL".Contains(grid[st.Row][st.Col - 1]))
+        possibles = possibles.Replace("|", "").Replace("L", "").Replace("F", "");
+
+    Console.WriteLine($"S:{possibles}");
+    return possibles[0];
 }
