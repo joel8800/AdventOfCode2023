@@ -1,4 +1,7 @@
-﻿namespace Day05
+﻿using System;
+using System.Reflection.Metadata.Ecma335;
+
+namespace Day05
 {
     public class NumRange
     {
@@ -7,8 +10,16 @@
         public long offset { get; set; }
 
         public NumRange()
-        {
+        { }
 
+        public NumRange(string rangeText)
+        {
+            string[] strs = rangeText.Split();
+            List<long> mapNums = strs.Select(x => long.Parse(x)).ToList();
+            
+            st = mapNums[1];
+            sp = mapNums[1] + mapNums[2] - 1;
+            offset = mapNums[0] - mapNums[1];
         }
 
         public NumRange(long start, long stop, long offset)
@@ -27,133 +38,64 @@
 
     internal class Translator
     {
-        public List<NumRange> InputRanges;
+        public List<NumRange> MapRanges;
         
         public Translator()
         {
-            InputRanges = [];
+            MapRanges = [];
         }
 
         public void SortRanges()
         {
-            InputRanges.Sort((x, y) => x.st.CompareTo(y.st));
+            MapRanges.Sort((x, y) => x.st.CompareTo(y.st));
         }
 
-        public void PrintRanges()
-        {
-            Console.WriteLine("--- in ---------");
-            foreach (NumRange nr in InputRanges)
-                Console.WriteLine(nr.ToString());
-        }
-
+        // part1
         public long Translate(long input)
         {
-            foreach (NumRange nr in InputRanges)
-            {
+            foreach (NumRange nr in MapRanges)
                 if (input >= nr.st && input <= nr.sp)
                     return input + nr.offset;
-            }
 
             return input;
         }
 
-        public List<NumRange> Translate(List<NumRange> ranges)
+        // part2
+        public List<NumRange> Translate(List<NumRange> seedRanges)
         {
-            List<NumRange> output = [];
+            List<NumRange> newSeeds = [];
 
-            for (int i = 0; i < ranges.Count; i++) 
+            while (seedRanges.Count > 0)
             {
-                bool outputAdded = false;
-                Console.WriteLine($"{ranges[i]} -- seed range[{i}]");
+                bool foundIntersect = false;
 
-                // find range where start point is
-                for (int j = 0; j < InputRanges.Count; j++)
+                NumRange sr = seedRanges[0];
+                seedRanges.RemoveAt(0);
+
+                foreach (NumRange mapRange in MapRanges)
                 {
-                    Console.WriteLine($"{InputRanges[j]} -- looking in this range[{j}]");
-                    // start point is in range
-                    if (InRange(ranges[i].st, InputRanges[j]))
+                    long overlapSt = Math.Max(sr.st, mapRange.st);
+                    long overlapSp = Math.Min(sr.sp, mapRange.sp);
+
+                    if (overlapSt < overlapSp)  // intersecting range
                     {
-                        if (InRange(ranges[i].sp, InputRanges[j]))
-                        {
-                            // stop is in this range
-                            NumRange translated = TranslateFullRange(ranges[i], j);
-                            output.Add(translated);
-                            outputAdded = true;
-                            break;
-                        }
-                        else
-                        {
-                            // stop is outside of this range
-                            List<NumRange> translated = TranslatePartialRanges(ranges[i], j);
-                            foreach (NumRange nr in translated)
-                                output.Add(nr);
-                            outputAdded = true;
-                            break;
-                        }
+                        foundIntersect = true;
+                        newSeeds.Add(new(overlapSt + mapRange.offset, overlapSp + mapRange.offset, 0));
+                        
+                        if (overlapSt > sr.st)  // left side leftover
+                            seedRanges.Add(new(sr.st, overlapSt, 0));
+                        
+                        if (sr.sp > overlapSp)  // right side leftover
+                            seedRanges.Add(new(overlapSp + 1, sr.sp, 0));
+                        
+                        break;
                     }
                 }
-
-                if (outputAdded == false)
-                {
-                    output.Add(ranges[i]);
-                    Console.WriteLine($"[{ranges[i].st,11}..{ranges[i].sp,11}] --  none added, no offset applied");
-                }
+                if (foundIntersect == false)
+                    newSeeds.Add(sr);
             }
 
-            return output;
-        }
-
-        private bool InRange(long num, NumRange range)
-        {
-            if (num >= range.st &&  num <= range.sp)
-                return true;
-
-            return false;
-        }
-
-        private NumRange TranslateFullRange(NumRange range, int inRangeIdx)
-        {
-            NumRange outRange = new()
-            {
-                st = range.st + InputRanges[inRangeIdx].offset,
-                sp = range.sp + InputRanges[inRangeIdx].offset
-            };
-            Console.WriteLine($"[{outRange.st,11}..{outRange.sp,11}] --  full added, offset {InputRanges[inRangeIdx].offset,11} applied");
-            return outRange;
-        }
-
-        private List<NumRange> TranslatePartialRanges(NumRange range, int inRangeIdx)
-        {
-            List<NumRange> outRanges = [];
-            NumRange lowerRange = new()
-            {
-                // translate lower part that is in range
-                st = range.st + InputRanges[inRangeIdx].offset,
-                sp = InputRanges[inRangeIdx].sp + InputRanges[inRangeIdx].offset
-            };
-            Console.WriteLine($"[{lowerRange.st,11}..{lowerRange.sp,11}] -- lower added, offset {InputRanges[inRangeIdx].offset,11} applied");
-            outRanges.Add(lowerRange);
-
-            // create new range for the upper part
-            NumRange newRange = new(InputRanges[inRangeIdx].sp + 1, range.sp, 0);
-
-            if (inRangeIdx <= InputRanges.Count - 1)
-            {
-                // translate upper part with next range's offset
-                newRange.st += InputRanges[inRangeIdx + 1].offset;
-                newRange.sp += InputRanges[inRangeIdx + 1].offset;
-                outRanges.Add(newRange);
-                Console.WriteLine($"[{newRange.st,11}..{newRange.sp,11}] -- upper added, offset {InputRanges[inRangeIdx + 1].offset,11} applied");
-            }
-            else
-            {
-                // not in next range so return as is
-                outRanges.Add(newRange);
-                Console.WriteLine($"[{newRange.st,11}..{newRange.sp,11}] -- upperadded, not in next range");
-            }
-
-
-            return outRanges;
+            return newSeeds;
         }
     }
 }
