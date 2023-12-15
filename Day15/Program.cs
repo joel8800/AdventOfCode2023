@@ -1,6 +1,6 @@
 ﻿using AoCUtils;
 
-Console.WriteLine("Day15: ");
+Console.WriteLine("Day15: Lens Library");
 
 string input = File.ReadAllText("input.txt");
 List<string> inputs = [.. input.Split(',')];
