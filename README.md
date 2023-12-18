@@ -4,7 +4,7 @@
 
 #### Progress:
 <img style="display: block; margin-left: auto; margin-right: auto; width: 100%;"
-	src="https://progress-bar.dev/28/?scale=50&title=StarsCollected&width=700&suffix=/50"
+	src="https://progress-bar.dev/31/?scale=50&title=StarsCollected&width=700&suffix=/50"
 	alt="Progress Bar">
 </img>
 | Day | Status | Source | Solution Notes |
@@ -24,4 +24,6 @@
  | [Day 14:  Parabolic Reflector Dish](https://adventofcode.com/2023/day/14) | :star::star: | [Solution](./Day14/Program.cs) |  |
  | [Day 15:  Lens Library](https://adventofcode.com/2023/day/15) | :star::star: | [Solution](./Day15/Program.cs) |  |
  | [Day 16:  The Floor Will Be Lava](https://adventofcode.com/2023/day/16) | :star::star: | [Solution](./Day16/Program.cs) |  |
+ | [Day 17:  Clumsy Crucible](https://adventofcode.com/2023/day/17) | :star: | [Solution](./Day17/Program.cs) |  |
+ | [Day 18:  Lavaduct Lagoon](https://adventofcode.com/2023/day/18) | :star::star: | [Solution](./Day18/Program.cs) |  |
 
