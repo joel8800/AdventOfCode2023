@@ -30,7 +30,6 @@ foreach (string line in partLines)
 }
 
 int accepted = 0;
-int rejected = 0;
 
 foreach (var part in parts)
 {
