@@ -11,9 +11,8 @@ List<(int h, int v)> results = [];
 foreach (string block in blocks)
 {
     List<string> grid = [.. block.Split(Environment.NewLine)];
-    
-    int h = CheckHorizontalReflection(grid, (-1, -1), false);
-    int v = CheckVerticalReflection(grid, (-1, -1));
+
+    (int h, int v) = FindReflectionLine(grid, (-1, -1));
 
     results.Add((h, v));    // save results for part2
 
@@ -44,22 +43,16 @@ foreach (string block in blocks)
             // flip location
             grid[cr] = FlipLocation(grid[cr], cc);
 
-            h = CheckHorizontalReflection(grid, results[blockNum], false);
-            v = CheckVerticalReflection(grid, results[blockNum]);
+            (h, v) = FindReflectionLine(grid, results[blockNum]);
 
             // flip back
             grid[cr] = FlipLocation(grid[cr], cc);
 
-           if ((h, v) != (-1, -1) && (h, v) != results[blockNum])
+            if ((h, v) != (-1, -1) && (h, v) != results[blockNum])
+            {
+                cr = 1000;  // break out of outer loop as well
                 break;
-        }
-        if ((h, v) != (-1, -1) && (h, v) != results[blockNum])
-        {
-            if (h == results[blockNum].h)
-                h = -1;
-            if (v == results[blockNum].v)
-                v = -1;
-            break;
+            }
         }
     }
 
@@ -75,17 +68,19 @@ Console.WriteLine($"Part2: {sumPt2}");
 
 //============================================================================
 
-void PrintGrid(List<string> grid)
+// check horizontal then transpose grid and repeat to check vertical
+(int h, int v) FindReflectionLine(List<string> grid, (int h, int v) pt1Results)
 {
-    for (int r = 0; r < grid.Count; r++)
-    {
-        for (int c = 0; c < grid[0].Length; c++)
-            Console.Write(grid[r][c]);
-        Console.WriteLine();
-    }
+    int h = CheckHorizontal(grid, pt1Results.h);
+    
+    List<string> transposed = Transpose(grid);
+    int v = CheckHorizontal(transposed, pt1Results.v);
+
+    return (h, v);
 }
 
-int CheckHorizontalReflection(List<string> grid, (int h, int v) pt1Score, bool isVert)
+// returns fold location or -1 if it doesn't find one
+int CheckHorizontal(List<string> grid, int pt1Result)
 {
     int fold = 0;
     string above = "";
@@ -108,23 +103,12 @@ int CheckHorizontalReflection(List<string> grid, (int h, int v) pt1Score, bool i
         fold++;
         if (above == below)
         {
-            if (isVert == false && fold == pt1Score.h)
-                continue;
-            if (isVert == true && fold == pt1Score.v)
-                continue;
-
-            return fold;
+            if (fold != pt1Result)
+                return fold;
         }
     }
 
     return -1;
-}
-
-int CheckVerticalReflection(List<string> grid, (int h, int v) pt1Score)
-{
-    List<string> transposed = Transpose(grid);
-
-    return CheckHorizontalReflection(transposed, pt1Score, true);
 }
 
 List<string> Transpose(List<string> grid)
@@ -151,20 +135,4 @@ string FlipLocation(string row, int index)
     char[] chars = row.ToCharArray();
     chars[index] = chars[index] == '#' ? '.' : '#';
     return new(chars);
-}
-
-bool IsNewResult((int h, int v) pt1, (int h, int v) pt2)
-{
-    if (pt1.h != pt2.h)
-    {
-        pt2.v = -1;
-        return true;
-    }
-
-    if (pt1.v != pt2.v)
-    {
-        pt2.h = -1;
-        return true;
-    }
-    return false;
 }
