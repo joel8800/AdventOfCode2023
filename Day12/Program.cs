@@ -1,107 +1,79 @@
 ﻿using AoCUtils;
-using System.Text;
 
 Console.WriteLine("Day12: Hot Springs");
 
 string[] input = FileUtil.ReadFileByLine("input.txt");
-int combos = 0;
 
-foreach (string line in input)
-    combos += CombosInRow(line);
-
-Console.WriteLine($"Part1: {combos}");
+long combosPt1 = 0;
+Dictionary<(int, int, int), long> cache = [];
 
 foreach (string line in input)
 {
+    string[] parts = line.Split();
+    
+    List<int> counts = parts[1].Split(',').Select(c => int.Parse(c)).ToList();
+    cache.Clear();
 
+    combosPt1 += CombosPt2(parts[0], counts, 0, 0, 0);
+    //combosPt1 += CombosInRow(parts[0], parts[1]);
 }
 
+Console.WriteLine($"Part1: {combosPt1}");
 
-Console.WriteLine($"Part2: {0}");
+//----------------------------------------------------------------------------
+
+long combosPt2 = 0;
+foreach (string line in input)
+{
+    string[] parts = line.Split();
+    string row5x = string.Join("?", Enumerable.Repeat(parts[0], 5));
+    string counts5x = string.Join(",", Enumerable.Repeat(parts[1], 5));
+    
+    List<int> counts = counts5x.Split(',').Select(c => int.Parse(c)).ToList();
+    cache.Clear();
+
+    combosPt2 += CombosPt2(row5x, counts, 0, 0, 0);
+}
+
+Console.WriteLine($"Part2: {combosPt2}");
 
 //============================================================================
 
-int CombosInRow(string entry)
+// Couldn't figure out part2. My original solution to part1 was to make each ? a
+// bit in an integer and try all combinations.  It was slow and did not scale to part2.
+// This is Jonathan Paulson's Python solution converted to C#
+long CombosPt2(string row, List<int> nums, int rowIdx, int numIdx, int current)
 {
-    int combos = 0;
+    long combos = 0;
+    (int, int, int) key = (rowIdx, numIdx, current);
 
-    string row = entry.Split(' ')[0];
-    string counts = entry.Split(' ')[1];
-    int unknown = entry.Where(c => c == '?').Count();
+    if (cache.TryGetValue(key, out long value))
+        return value;
 
-    Console.WriteLine($"unknowns: {unknown}");
-    //Console.WriteLine($"{row} -- {counts}");
-
-    for (int i = 0; i < Math.Pow(2, unknown); i++)
+    if (rowIdx == row.Length)
     {
-        List<char> binary = [.. Convert.ToString(i, 2).PadLeft(unknown, '0')];
-        StringBuilder sb = new();
-
-        //Console.Write($"-- binary:{Convert.ToString(i, 2).PadLeft(unknown, '0')} ");
-
-        foreach (char c in row)
-        {
-            if (c != '?')
-            {
-                sb.Append(c == '.' ? '.' : '#');
-            }
-            else
-            {
-                sb.Append(binary[0] == '0' ? '.' : '#');
-                binary.RemoveAt(0);
-            }
-        }
-
-        string result = CountRuns(sb.ToString());
-        //Console.WriteLine($"- {sb} -- {result}");
-
-        if (result == counts)
-            combos++;
-    }
-
-    //Console.WriteLine($"combos found: {combos}");
-    return combos;
-}
-
-string CountRuns(string row)
-{
-    List<int> runs = [];
-
-    bool isInRun = false;
-    int count = 0;
-    foreach (char c in row)
-    {
-        if (isInRun)
-        {
-            if (c == '.')
-            {
-                isInRun = false;
-                runs.Add(count);
-                count = 0;
-            }
-            else
-                count++;
-        }
+        if (numIdx == nums.Count && current == 0)
+            return 1;
+        else if (numIdx == nums.Count - 1 && nums[numIdx] == current)
+            return 1;
         else
+            return 0;
+    }
+
+    foreach (char c in ".#")
+    {
+        if (row[rowIdx] == c || row[rowIdx] == '?')
         {
-            if (c == '#')
-            {
-                isInRun = true;
-                count = 1;
-            }
+            if (c == '.' && current == 0)
+                combos += CombosPt2(row, nums, rowIdx + 1, numIdx, 0);
+            else if (c == '.' && current > 0 && numIdx < nums.Count && nums[numIdx] == current)
+                combos += CombosPt2(row, nums, rowIdx + 1, numIdx + 1, 0);
+            else if (c == '#')
+                combos += CombosPt2(row, nums, rowIdx + 1, numIdx, current + 1);
         }
     }
 
-    if (isInRun)
-        runs.Add(count);
+    cache[key] = combos;
 
-    StringBuilder sb = new();
-    for (int i = 0; i < runs.Count; i++)
-    {
-        sb.Append(runs[i]);
-        if (i < runs.Count - 1)
-            sb.Append(',');
-    }
-
-    return sb.ToString();
+    return combos;
 }

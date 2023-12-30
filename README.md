@@ -4,7 +4,7 @@
 
 #### Progress:
 <img style="display: block; margin-left: auto; margin-right: auto; width: 100%;"
-	src="https://progress-bar.dev/35/?scale=50&title=StarsCollected&width=700&suffix=/50"
+	src="https://progress-bar.dev/36/?scale=50&title=StarsCollected&width=700&suffix=/50"
 	alt="Progress Bar">
 </img>
 | Day | Status | Source | Solution Notes |
@@ -20,7 +20,7 @@
  | [Day 09:  Mirage Maintenance](https://adventofcode.com/2023/day/9) | :star::star: | [Solution](./Day09/Program.cs) |  |
  | [Day 10:  Pipe Maze](https://adventofcode.com/2023/day/10) | :star::star: | [Solution](./Day10/Program.cs) |  |
  | [Day 11:  Cosmic Expansion](https://adventofcode.com/2023/day/11) | :star::star: | [Solution](./Day11/Program.cs) |  |
- | [Day 12:  Hot Springs](https://adventofcode.com/2023/day/12) | :star: | [Solution](./Day12/Program.cs) |  |
+ | [Day 12:  Hot Springs](https://adventofcode.com/2023/day/12) | :star::star: | [Solution](./Day12/Program.cs) |  |
  | [Day 13:  Point of Incidence](https://adventofcode.com/2023/day/13) | :star: | [Solution](./Day13/Program.cs) |  |
  | [Day 14:  Parabolic Reflector Dish](https://adventofcode.com/2023/day/14) | :star::star: | [Solution](./Day14/Program.cs) |  |
  | [Day 15:  Lens Library](https://adventofcode.com/2023/day/15) | :star::star: | [Solution](./Day15/Program.cs) |  |
