@@ -1,6 +1,4 @@
-﻿using AoCUtils;
-
-Console.WriteLine("Day15: Lens Library");
+﻿Console.WriteLine("Day15: Lens Library");
 
 string input = File.ReadAllText("input.txt");
 List<string> inputs = [.. input.Split(',')];
@@ -62,16 +60,12 @@ Console.WriteLine($"Part2: {focusPower}");
 
 //============================================================================
 
-int Hash(string label)
+static int Hash(string label)
 {
     int hash = 0;
 
     foreach (char c in label)
-    {
-        hash += Convert.ToInt32(c);
-        hash *= 17;
-        hash %= 256;
-    }
+        hash = (hash + Convert.ToInt32(c)) * 17 % 256;
 
     return hash;
 }
