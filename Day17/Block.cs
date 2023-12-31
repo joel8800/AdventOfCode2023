@@ -1,60 +1,88 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Day17
+﻿namespace Day17
 {
-    internal class Block
+    // record works but don't include Loss in seen HashSet
+    // class works if equatable methods are overridden
+    //public record BlockRec
+    //{
+    //    public BlockRec(int hl, int r, int c, int dr, int dc, int n)
+    //    {
+    //        Loss = hl;
+    //        R = r;
+    //        C = c;
+    //        DR = dr;
+    //        DC = dc;
+    //        Steps = n;
+    //    }
+
+    //    public int Loss { get; set; }
+    //    public int R { get; set; }
+    //    public int C { get; set; }
+    //    public int DR { get; set; }
+    //    public int DC { get; set; }
+    //    public int Steps { get; set; }
+    //}
+
+    // class requires overriding Equals and GetHashCode methods to work in collections
+    // otherwise two Blocks will always be not equal even if all fields are equal
+    public class Block //: IEquatable<Block>
     {
-        public int H { get; set; }
+        public int Loss { get; set; }
         public int R { get; set; }
         public int C { get; set; }
         public int DR { get; set; }
         public int DC { get; set; }
-        public int N { get; set; }
-        public int HC { get; set; }
+        public int Steps { get; set; }
+        public int Hash { get; set; }
 
-        public Block(int h, int r, int c, int dR, int dC, int n)
+        public Block(int cost, int row, int col, int dRow, int dCol, int steps)
         {
-            H = h;
-            R = r;
-            C = c;
-            DR = dR;
-            DC = dC;
-            N = n;
-            HC = CalcHashCode();
-            Console.WriteLine($"hash code: {HC}");
+            Loss = cost;
+            R = row;
+            C = col;
+            DR = dRow;
+            DC = dCol;
+            Steps = steps;
+            Hash = CalcHashCode();
         }
 
+        // use row-col coords, direction, and step count for hash
         private int CalcHashCode()
         {
             int hash = 17;
-            hash = hash * 31 + H;
-            hash = hash * 13 + R;
-            hash = hash * 13 + C;
-            hash = hash * 11 + DR;
-            hash = hash * 11 + DC;
-            hash = hash * 23 + N;
+            hash = hash * 11 + R;
+            hash = hash * 11 + C;
+            hash = hash * 13 + DR;
+            hash = hash * 13 + DC;
+            hash = hash * 19 + Steps;
             return hash;
         }
 
+        // optional, easier to debug when you can print
         public override string ToString()
         {
-            return $"{H}:[{R},{C}]:[{DR},{DC}]:{N}";
+            return $"{Loss}:[{R},{C}]:[{DR},{DC}]:{Steps}";
         }
 
         public override int GetHashCode()
         {
-            return HC;
+            return Hash;
         }
 
         public override bool Equals(object? obj)
         {
-            if (obj == null) return false;
+            //return Hash == ((Block)obj).Hash;
+            return Equals(obj as Block);
+        }
 
-            return HC == ((Block) obj).HC;
+        public bool Equals(Block? other)
+        {
+            //return Hash == other.Hash;
+            return other != null &&
+                R == other.R &&
+                C == other.C &&
+                DR == other.DR &&
+                DC == other.DC &&
+                Steps == other.Steps;
         }
     }
 }

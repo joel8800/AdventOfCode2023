@@ -3,80 +3,15 @@ using Day17;
 
 Console.WriteLine("Day17: Clumsy Crucible");
 
-List<List<int>> input = FileUtil.ReadFileToIntGrid("inputSample.txt");
-List<(int r, int c)> deltas = [(0, 1), (1, 0), (0, -1), (-1, 0)];
+List<List<int>> grid = FileUtil.ReadFileToIntGrid("input.txt");
 
-HashSet<Block> seen = [];
-PriorityQueue<Block, int> pq = new();
-pq.Enqueue(new Block(0, 0, 0, 0, 0, 0), 0);
+int answerPt1 = Dijkstra(grid, false);
+Console.WriteLine($"Part1: {answerPt1}");
 
-Block x = new(4, 3, 6, -1, 0, 2);
-Block y = new(4, 3, 6, -1, 0, 1);
+//----------------------------------------------------------------------------
 
-Console.WriteLine($"{x} == {y} ? {x.Equals(y)}");
-
-while (pq.Count > 0)
-{
-    Block b = pq.Dequeue();
-
-    if (b.R == input.Count - 1 && b.C == input[0].Count - 1)
-    {
-        Console.WriteLine($"reached end: {b}");
-        break;
-    }
-
-    if (seen.Contains(b))
-    {
-        Console.WriteLine($"already in seen: {b}");
-        continue;
-    }
-    Console.WriteLine($"add to seen: {b}");
-    seen.Add(b);
-
-    if (b.N < 3 && (b.DR, b.DC) != (0, 0))
-    {
-        int nr = b.R + b.DR;
-        int nc = b.C + b.DC;
-
-        if (IsInBounds(input, nr, nc))
-        {
-            int weight = input[nr][nc];
-            Block nb = new(b.H + weight, nr, nc, b.DR, b.DC, b.N + 1);
-            if (b.N + 1 < 3)
-            {
-                Console.WriteLine($"add to queue: {nb}: ({pq.Count})");
-                pq.Enqueue(nb, b.H + weight);
-            }
-        }
-    }
-
-    foreach ((int ndr, int ndc) in deltas)
-    {
-        //if ((ndr, ndc) != (b.DR, b.DC) && (ndr, ndc) != (-b.DR, -b.DC))
-        //{
-            Console.Write($"- new delta[{ndr},{ndc}]: ");
-            int nr = b.R + ndr;
-            int nc = b.C + ndc;
-
-            if (IsInBounds(input, nr, nc))
-            {
-                int weight = input[nr][nc];
-                Block nb = new(b.H + weight, nr, nc, ndr, ndc, b.N + 1);
-                if (b.N + 1 < 3)
-                {
-                    Console.WriteLine($"add to queue: {nb}: ({pq.Count})");
-                    pq.Enqueue(nb, b.H + weight);
-                }
-            }
-            else
-                Console.WriteLine();
-        //}
-    }
-}
-
-Console.WriteLine($"Part1: {0}");   // 102, 847
-
-Console.WriteLine($"Part2: {0}");   // 94, 997
+int answerPt2 = Dijkstra(grid, true);
+Console.WriteLine($"Part2: {answerPt2}");
 
 //============================================================================
 
@@ -85,4 +20,69 @@ bool IsInBounds(List<List<int>> grid, int row, int col)
     if (row >= 0 && col >= 0 && row < grid.Count && col < grid[0].Count)
         return true;
     return false;
+}
+
+// Converted Hyperneutrino's python solution
+int Dijkstra(List<List<int>> grid, bool isPart2)
+{
+    List<(int r, int c)> dirs = [(-1, 0), (0, 1), (1, 0), (0, -1)]; // N E S W
+
+    PriorityQueue<Block, int> pq = new();
+    HashSet<Block> seen = [];
+
+    pq.Enqueue(new Block(0, 0, 0, 0, 0, 0), 0);
+
+    while (pq.Count > 0)
+    {
+        Block curr = pq.Dequeue();
+
+        // reached target?
+        if (curr.R == grid.Count - 1 && curr.C == grid[0].Count - 1)
+        {
+            if (isPart2 && curr.Steps < 4)
+                continue;
+
+            return curr.Loss;
+        }
+
+        // skip if been there
+        if (seen.Contains(curr))
+            continue;
+        seen.Add(curr);
+
+        int minSteps = isPart2 ? 4 : 0;
+        int maxSteps = isPart2 ? 10 : 3;
+
+        // continue in same direction
+        if (curr.Steps < maxSteps && (curr.DR, curr.DC) != (0, 0))
+        {
+            int newR = curr.R + curr.DR;
+            int newC = curr.C + curr.DC;
+            if (IsInBounds(grid, newR, newC))
+            {
+                Block nb = new(curr.Loss + grid[newR][newC], newR, newC, curr.DR, curr.DC, curr.Steps + 1);
+                pq.Enqueue(nb, nb.Loss);
+            }
+        }
+
+        // try other directions
+        if (curr.Steps >= minSteps || (curr.DR, curr.DC) == (0, 0))
+        {
+            foreach ((int nextDR, int nextDC) in dirs)
+            {   // exclude forward and backward, add only left and right turns
+                if ((nextDR, nextDC) != (curr.DR, curr.DC) && (nextDR, nextDC) != (-curr.DR, -curr.DC))
+                {
+                    int newR = curr.R + nextDR;
+                    int newC = curr.C + nextDC;
+                    if (IsInBounds(grid, newR, newC))
+                    {
+                        Block nb = new(curr.Loss + grid[newR][newC], newR, newC, nextDR, nextDC, 1);
+                        pq.Enqueue(nb, nb.Loss);
+                    }
+                }
+            }
+        }
+    }
+
+    return -1;
 }
