@@ -4,7 +4,7 @@
 
 #### Progress:
 <img style="display: block; margin-left: auto; margin-right: auto; width: 100%;"
-	src="https://progress-bar.dev/38/?scale=50&title=StarsCollected&width=700&suffix=/50"
+	src="https://progress-bar.dev/39/?scale=50&title=StarsCollected&width=700&suffix=/50"
 	alt="Progress Bar">
 </img>
 | Day | Status | Source | Solution Notes |
@@ -21,12 +21,12 @@
  | [Day 10:  Pipe Maze](https://adventofcode.com/2023/day/10) | :star::star: | [Solution](./Day10/Program.cs) | Raycasting to find interior |
  | [Day 11:  Cosmic Expansion](https://adventofcode.com/2023/day/11) | :star::star: | [Solution](./Day11/Program.cs) | Calculating Manhattan distances |
  | [Day 12:  Hot Springs](https://adventofcode.com/2023/day/12) | :star::star: | [Solution](./Day12/Program.cs) | Needed help from the internet for part2 |
- | [Day 13:  Point of Incidence](https://adventofcode.com/2023/day/13) | :star::star: | [Solution](./Day13/Program.cs) |  |
+ | [Day 13:  Point of Incidence](https://adventofcode.com/2023/day/13) | :star::star: | [Solution](./Day13/Program.cs) | Rotate and roll grid |
  | [Day 14:  Parabolic Reflector Dish](https://adventofcode.com/2023/day/14) | :star::star: | [Solution](./Day14/Program.cs) | Need custom hash function for Dictionary keys |
  | [Day 15:  Lens Library](https://adventofcode.com/2023/day/15) | :star::star: | [Solution](./Day15/Program.cs) | Simple hash function |
  | [Day 16:  The Floor Will Be Lava](https://adventofcode.com/2023/day/16) | :star::star: | [Solution](./Day16/Program.cs) | BFS with queue |
- | [Day 17:  Clumsy Crucible](https://adventofcode.com/2023/day/17) | :star::star: | [Solution](./Day17/Program.cs) |  |
+ | [Day 17:  Clumsy Crucible](https://adventofcode.com/2023/day/17) | :star::star: | [Solution](./Day17/Program.cs) | Pathfinding with Dijkstra |
  | [Day 18:  Lavaduct Lagoon](https://adventofcode.com/2023/day/18) | :star::star: | [Solution](./Day18/Program.cs) |  |
- | [Day 19:  Aplenty](https://adventofcode.com/2023/day/19) | :star: | [Solution](./Day19/Program.cs) |  |
+ | [Day 19:  Aplenty](https://adventofcode.com/2023/day/19) | :star::star: | [Solution](./Day19/Program.cs) |  |
  | [Day 21:  Step Counter](https://adventofcode.com/2023/day/21) | :star: | [Solution](./Day21/Program.cs) |  |
 
