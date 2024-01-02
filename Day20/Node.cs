@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.Design;
-
-namespace Day20
+﻿namespace Day20
 {
     internal class Node
     {
@@ -10,40 +8,50 @@ namespace Day20
         public Dictionary<string, int> Inputs { get; set; }
         public List<string> Outputs { get; set; }
 
+        public Node()
+        {
+            Name = "";
+            State = 0;
+            Type = "";
+            Inputs = [];
+            Outputs = [];
+        }
+
         public Node(string name, string outputs)
         {
             Type = name[0].ToString();
             Name = name[1..^0];
             State = 0;
             Inputs = [];
-            string[] nodes = outputs.Split(", ");
-            Outputs = [.. nodes];
+            Outputs = [];
+            if (outputs != "")
+            {
+                string[] nodes = outputs.Split(", ");
+                Outputs = [.. nodes];
+            }
         }
 
-        public void Process(Dictionary<string, Node> graph)
+        public void InvertState()
         {
-            if (Type == "%")
-            {   // flip flop
-                if (Inputs.Any(i => i.Value == 0))
-                    State = State == 0 ? 1 : 0;
-            }
-            else
-            {   // conjunction
-                foreach (string key in Inputs.Keys)
-                {
-                    if (graph[key].State == 1)
-                        Inputs[key] = 1;
-                }
+            State = State == 0 ? 1 : 0;
+        }
 
-                if (Inputs.All(i => i.Value == 1))
-                {
-                    State = 0;
-                }
-                else
-                {
-                    State = 1;
-                }
-            }
+        public override string ToString()
+        {
+            string s = $"{Name,-3}:{Type}:state={State}: in[ ";
+
+            foreach (string key in Inputs.Keys)
+                s += $"{key,3}:{Inputs[key]} ";
+
+            s += "]: out[ ";
+            
+            if (Outputs != null)
+                foreach (string o in Outputs)
+                    s += $"{o} ";
+            
+            s += "]";
+            
+            return s;
         }
     }
 }
