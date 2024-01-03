@@ -1,0 +1,42 @@
+digraph Counter3 {
+    label = "Counter3";
+
+    node [ color = black ]
+    edge [ color = red ]
+
+    broadcaster [ shape = box, color = orange, label = "Broadcaster" ]
+    rx [ shape = box, color = orange, style = filled, label = "End" ]
+
+    hd [ label = "hd:bit0" ]
+    lt [ label = "lt:bit1" ]
+    rh [ label = "rh:bit2" ]
+    gx [ label = "gx:bit3" ]
+    xf [ label = "xf:bit4" ]
+    tg [ label = "tg:bit5" ]
+    ks [ label = "ks:bit6" ]
+    tc [ label = "tc:bit7" ]
+    qz [ label = "qz:bit8" ]
+    rl [ label = "rl:bit9" ]
+    pf [ label = "pf:bit10" ]
+    pr [ label = "pr:bit11" ]
+
+    broadcaster -> hd
+    {
+        //rank = same
+        hd -> lt, nl                        // % bit0
+        lt -> rh                            // % bit1
+        rh -> nl, gx                        // % bit2
+        gx -> xf                            // % bit3
+        xf -> tg                            // % bit4
+        tg -> nl, ks                        // % bit5
+        ks -> tc                            // % bit6
+        tc -> qz                            // % bit7
+        qz -> nl, rl                        // % bit8
+        rl -> pf, nl                        // % bit9
+        pf -> pr, nl                        // % bit10
+        pr -> nl                            // % bit11
+    }
+    nl -> ks, cq, tc, xf, gx, hd, lt [ color = blue ]   // &
+    cq -> ns    // &
+    ns -> rx
+}

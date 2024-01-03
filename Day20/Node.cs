@@ -8,15 +8,6 @@
         public Dictionary<string, int> Inputs { get; set; }
         public List<string> Outputs { get; set; }
 
-        public Node()
-        {
-            Name = "";
-            State = 0;
-            Type = "";
-            Inputs = [];
-            Outputs = [];
-        }
-
         public Node(string name, string outputs)
         {
             Type = name[0].ToString();

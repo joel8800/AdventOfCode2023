@@ -1,0 +1,101 @@
+digraph G {
+    
+    //layout = neato;
+    overlap = false;
+    splines = true;
+    
+    broadcaster [ shape = hex, color = orange ]
+    rx [ shape = hex, color = orange ]
+
+    ns -> rx
+    
+    subgraph counter0 {
+        label = "Counter0"
+        node [ color = black ]
+        edge [ color = red ]
+        
+        broadcaster -> jz
+        jz -> dj, ht                        // %
+        dj -> dc, fq, jz, ht, zs, jc        // &
+        ht -> jv                            // %
+        jv -> dj, zs                        // %
+        zs -> dq                            // %
+        dq -> dj, jc                        // %
+        jc -> xv                            // %
+        xv -> dj, dx                        // %
+        dx -> fq, dj                        // %
+        fq -> xz                            // %
+        xz -> dj, zp                        // %
+        zp -> mm, dj                        // %
+        mm -> dj                            // %
+        dc -> ns                            // &
+    }
+    
+    subgraph counter1 {
+        label = "Counter1"
+        node [ color = black ]
+        edge [ color = blue ]
+    
+        broadcaster -> sq
+        sq -> rr, vh                        // %
+        rr -> gp, rv, jt, qc, sq            // &
+        vh -> qc, rr                        // %
+        qc -> gp                            // %
+        gp -> cp                            // %
+        cp -> rr, jt                        // %
+        jt -> kb                            // %
+        kb -> hj, rr                        // %
+        hj -> cf, rr                        // %
+        cf -> jg, rr                        // %
+        jg -> rr, pd                        // %
+        pd -> rr, mt                        // %
+        mt -> rr                            // %
+        rv -> ns                            // &
+    }
+    
+    subgraph counter2 {
+        label = "Counter2"
+        node [ color = black ]
+        edge [ color = seagreen ]
+        
+        broadcaster -> zj
+        zj -> kn, pb                        // %
+        pb -> gf, gv, vp, qb, vr, hq, zj    // &
+        kn -> pb, xn                        // %
+        xn -> pb, gf                        // %
+        gf -> gv                            // %
+        gv -> vr                            // %
+        vr -> qb                            // %
+        qb -> hq                            // %
+        hq -> nx                            // %
+        nx -> pb, bs                        // %
+        bs -> pb, rd                        // %
+        rd -> vs, pb                        // %
+        vs -> pb                            // %
+        vp -> ns                            // &
+    }
+
+    subgraph counter3 {
+        label = "Counter3"
+        node [ color = black ]
+        edge [ color = purple ]
+
+        broadcaster -> hd
+        hd -> lt, nl                        // %
+        nl -> ks, cq, tc, xf, gx, hd, lt    // &
+        lt -> rh                            // %
+        rh -> nl, gx                        // %
+        gx -> xf                            // %
+        xf -> tg                            // %
+        tg -> nl, ks                        // %
+        ks -> tc                            // %
+        tc -> qz                            // %
+        qz -> nl, rl                        // %
+        rl -> pf, nl                        // %
+        pf -> pr, nl                        // %
+        pr -> nl                            // %
+        cq -> ns                            // &
+    }
+
+}
+

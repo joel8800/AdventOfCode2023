@@ -4,7 +4,7 @@
 
 #### Progress:
 <img style="display: block; margin-left: auto; margin-right: auto; width: 100%;"
-	src="https://progress-bar.dev/40/?scale=50&title=StarsCollected&width=700&suffix=/50"
+	src="https://progress-bar.dev/41/?scale=50&title=StarsCollected&width=700&suffix=/50"
 	alt="Progress Bar">
 </img>
 | Day | Status | Source | Solution Notes |
@@ -28,6 +28,6 @@
  | [Day 17:  Clumsy Crucible](https://adventofcode.com/2023/day/17) | :star::star: | [Solution](./Day17/Program.cs) | Pathfinding with Dijkstra |
  | [Day 18:  Lavaduct Lagoon](https://adventofcode.com/2023/day/18) | :star::star: | [Solution](./Day18/Program.cs) |  |
  | [Day 19:  Aplenty](https://adventofcode.com/2023/day/19) | :star::star: | [Solution](./Day19/Program.cs) |  |
- | [Day 20:  Pulse Propagation](https://adventofcode.com/2023/day/20) | :star: | [Solution](./Day20/Program.cs) |  |
+ | [Day 20:  Pulse Propagation](https://adventofcode.com/2023/day/20) | :star::star: | [Solution](./Day20/Program.cs) |  |
  | [Day 21:  Step Counter](https://adventofcode.com/2023/day/21) | :star: | [Solution](./Day21/Program.cs) |  |
 

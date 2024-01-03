@@ -18,76 +18,32 @@ foreach (string line in input)
     Node newNode = new(name, outputs);
     graph[newNode.Name] = newNode;
 }
-
 ConnectInputs(graph);
-//PrintGraph(graph);
 
-Queue<(string name, string output, int pulse)> q = [];
-int lowPulses = 0;
-int highPulses = 0;
+int answerPt1 = GetPresses(graph, false);
 
-for (int i = 0; i < 1000; i++)
-{
-    q.Clear();
-    
-    lowPulses++;
-    foreach (string target in graph["broadcaster"].Outputs)
-        q.Enqueue(("broadcaster", target, 0));
-
-    while (q.Count > 0)
-    {
-        (string current, string target, int pulse)= q.Dequeue();
-
-        if (pulse == 0)
-            lowPulses++;
-        else
-            highPulses++;
-
-        if (graph.ContainsKey(target) == false)
-            continue;
-
-        Node destNode = graph[target];
-
-        if (destNode.Type == "%")
-        {
-            if (pulse == 0)
-            {
-                destNode.InvertState();
-                foreach (string key in destNode.Outputs)
-                    q.Enqueue((target, key, destNode.State));
-            }
-        }
-        else
-        {
-            destNode.Inputs[current] = pulse;
-            if (destNode.Inputs[current] == 1 && destNode.Inputs.Values.Distinct().Count() == 1)
-                destNode.State = 0;
-            else
-                destNode.State = 1;
-
-            foreach (string key in destNode.Outputs)
-                q.Enqueue((target, key, destNode.State));
-        }
-    }
-}
-
-int answerPt1 = lowPulses * highPulses;
 Console.WriteLine($"Part1: {answerPt1}");
 
 //----------------------------------------------------------------------------
 
-long answerPt2 = 0;
+// I used Graphviz to visualize my input graph.  See graph.gv.
+// My graph is composed of four 12-bit binary counters with different feedback
+// bits.  The four counters cycle at different counts and feed into a conjunctor
+// that feeds rx. The rx node pulses when all four counters pulse at the same
+// time.  The answer for Part 2 is the least common multiple of the four counts.
 
-Console.WriteLine($"Part2: {0}");
+int counter0 = GetPresses(graph, true, "dj");         // dj -> dc -> ns -> rx
+int counter1 = GetPresses(graph, true, "rr");         // rr -> rv -> ns -> rx
+int counter2 = GetPresses(graph, true, "pb");         // pb -> vp -> ns -> rx
+int counter3 = GetPresses(graph, true, "nl");         // nl -> cq -> ns -> rx
+
+List<long> nums = [counter0, counter1, counter2, counter3];
+
+long answerPt2 = MathUtil.LCM(nums);
+
+Console.WriteLine($"Part2: {answerPt2}");
 
 //============================================================================
-
-void PrintGraph(Dictionary<string, Node> graph)
-{
-    foreach (string key in graph.Keys)
-        Console.WriteLine(graph[key]);
-    Console.WriteLine();
-}
 
 void ConnectInputs(Dictionary<string, Node> graph)
 {
@@ -101,7 +57,82 @@ void ConnectInputs(Dictionary<string, Node> graph)
         graph[key] = new(" " + key, "");
 
     foreach (string key in graph.Keys)  
-        if (graph[key].Outputs != null)
-            foreach (string s in graph[key].Outputs)
-                graph[s].Inputs[key] = 0;
+        foreach (string s in graph[key].Outputs)
+            graph[s].Inputs[key] = 0;
+}
+
+int GetPresses(Dictionary<string, Node> graph, bool isPart2, string nodeName = "rx")
+{
+    Queue<(string name, string output, int pulse)> q = [];
+    
+    // for part1
+    int lowPulses = 0;
+    int highPulses = 0;
+    
+    // for part2
+    int lowPulse1 = 0;
+    int lowPulse2 = 0;
+    int localState = 1;
+    
+    int presses = isPart2 ? 8192 : 1000;
+
+    for (int i = 0; i < presses; i++)
+    {
+        q.Clear();
+
+        lowPulses++;
+        foreach (string target in graph["broadcaster"].Outputs)
+            q.Enqueue(("broadcaster", target, 0));
+
+        while (q.Count > 0)
+        {
+            (string current, string target, int pulse) = q.Dequeue();
+
+            if (pulse == 0)
+                lowPulses++;
+            else
+                highPulses++;
+
+            Node destNode = graph[target];
+
+            if (destNode.Type == "%")
+            {
+                if (pulse == 0)
+                {
+                    destNode.InvertState();
+                    foreach (string key in destNode.Outputs)
+                        q.Enqueue((target, key, destNode.State));
+                }
+            }
+            else
+            {
+                destNode.Inputs[current] = pulse;
+                if (destNode.Inputs[current] == 1 && destNode.Inputs.Values.Distinct().Count() == 1)
+                    destNode.State = 0;
+                else
+                    destNode.State = 1;
+
+                foreach (string key in destNode.Outputs)
+                    q.Enqueue((target, key, destNode.State));
+            }
+
+            if (isPart2 && destNode.Name == nodeName && destNode.State != localState)
+            {
+                // save first time node pulses low
+                if (localState == 0 && lowPulse1 == 0)
+                    lowPulse1 = i;
+
+                // save second time node pulses low
+                if (localState == 0 && lowPulse2 == 0 && i > lowPulse1)
+                    lowPulse2 = i;
+
+                localState = destNode.State;
+            }
+        }
+    }
+
+    if (isPart2)
+        return lowPulse2 - lowPulse1;
+    else
+        return lowPulses * highPulses;
 }
