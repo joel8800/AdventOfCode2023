@@ -108,7 +108,7 @@
             return a;
         }
 
-        // LCM - least common multiple
+        // LCM - Least Common Multiple
         public static int LCM(int a, int b)
         {
             return (a / GCF(a, b)) * b;
@@ -118,6 +118,17 @@
         {
             return (a / GCF(a, b)) * b;
         }
-    }
 
+        public static long LCM(List<long> numbers)
+        {
+            return numbers.Aggregate((x, y) => x * y / GCD(x, y));
+        }
+
+        public static long GCD(long a, long b)
+        {
+            if (b == 0)
+                return a;
+            return GCD(b, a % b);
+        }
+    }
 }
