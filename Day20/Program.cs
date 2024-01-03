@@ -20,7 +20,7 @@ foreach (string line in input)
 }
 ConnectInputs(graph);
 
-int answerPt1 = GetPresses(graph, false);
+int answerPt1 = GetPulseCount(graph, false);
 
 Console.WriteLine($"Part1: {answerPt1}");
 
@@ -32,16 +32,30 @@ Console.WriteLine($"Part1: {answerPt1}");
 // that feeds rx. The rx node pulses when all four counters pulse at the same
 // time.  The answer for Part 2 is the least common multiple of the four counts.
 
-int counter0 = GetPresses(graph, true, "dj");         // dj -> dc -> ns -> rx
-int counter1 = GetPresses(graph, true, "rr");         // rr -> rv -> ns -> rx
-int counter2 = GetPresses(graph, true, "pb");         // pb -> vp -> ns -> rx
-int counter3 = GetPresses(graph, true, "nl");         // nl -> cq -> ns -> rx
+int counter0 = GetPulseCount(graph, true, "dj");         // dj -> dc -> ns -> rx
+int counter1 = GetPulseCount(graph, true, "rr");         // rr -> rv -> ns -> rx
+int counter2 = GetPulseCount(graph, true, "pb");         // pb -> vp -> ns -> rx
+int counter3 = GetPulseCount(graph, true, "nl");         // nl -> cq -> ns -> rx
 
 List<long> nums = [counter0, counter1, counter2, counter3];
-
 long answerPt2 = MathUtil.LCM(nums);
 
 Console.WriteLine($"Part2: {answerPt2}");
+
+// Using the Graphviz visualizations for each of the counters, the feedback node
+// pulses low when all of its inputs are high. The bit nodes can be used to 
+// generate the counts without going through the GetPresses function
+//
+// counter0 dj => mm zp xz fq dx xv jc dq zs jv ht jz
+//             => 1  1  1  0  1  1  0  1  0  1  0  1  => 0xED5 = 3797
+// counter1 rr => mt pd jg cf hj kb jt cp gp qc vh sq
+//             => 1  1  1  1  1  1  0  1  0  0  1  1  => 0xFD3 = 4051
+// counter2 pb => vs rd bs nx hq qb vr gv gf xn kn zj
+//             => 1  1  1  1  0  0  0  0  0  1  1  1  => 0xF07 = 3847
+// counter3 nl => pr pf rl qz tc ks tg xf gx rh lt hd
+//          nl => 1  1  1  1  0  0  1  0  0  1  0  1  => 0xF25 = 3877
+
+//Console.WriteLine($"       {MathUtil.LCM([3797, 4051, 3847, 3877])}");
 
 //============================================================================
 
@@ -61,7 +75,7 @@ void ConnectInputs(Dictionary<string, Node> graph)
             graph[s].Inputs[key] = 0;
 }
 
-int GetPresses(Dictionary<string, Node> graph, bool isPart2, string nodeName = "rx")
+int GetPulseCount(Dictionary<string, Node> graph, bool isPart2, string nodeName = "rx")
 {
     Queue<(string name, string output, int pulse)> q = [];
     
