@@ -4,7 +4,7 @@
 
 #### Progress:
 <img style="display: block; margin-left: auto; margin-right: auto; width: 100%;"
-	src="https://progress-bar.dev/42/?scale=50&title=StarsCollected&width=700&suffix=/50"
+	src="https://progress-bar.dev/44/?scale=50&title=StarsCollected&width=700&suffix=/50"
 	alt="Progress Bar">
 </img>
 | Day | Status | Source | Solution Notes |
@@ -30,4 +30,5 @@
  | [Day 19:  Aplenty](https://adventofcode.com/2023/day/19) | :star::star: | [Solution](./Day19/Program.cs) |  |
  | [Day 20:  Pulse Propagation](https://adventofcode.com/2023/day/20) | :star::star: | [Solution](./Day20/Program.cs) |  |
  | [Day 21:  Step Counter](https://adventofcode.com/2023/day/21) | :star::star: | [Solution](./Day21/Program.cs) |  |
+ | [Day 22:  Sand Slabs](https://adventofcode.com/2023/day/22) | :star::star: | [Solution](./Day22/Program.cs) |  |
 
