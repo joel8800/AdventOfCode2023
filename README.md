@@ -4,7 +4,7 @@
 
 #### Progress:
 <img style="display: block; margin-left: auto; margin-right: auto; width: 100%;"
-	src="https://progress-bar.dev/46/?scale=50&title=StarsCollected&width=700&suffix=/50"
+	src="https://progress-bar.dev/47/?scale=50&title=StarsCollected&width=700&suffix=/50"
 	alt="Progress Bar">
 </img>
 | Day | Status | Source | Solution Notes |
@@ -32,4 +32,5 @@
  | [Day 21:  Step Counter](https://adventofcode.com/2023/day/21) | :star::star: | [Solution](./Day21/Program.cs) |  |
  | [Day 22:  Sand Slabs](https://adventofcode.com/2023/day/22) | :star::star: | [Solution](./Day22/Program.cs) |  |
  | [Day 23:  A Long Walk](https://adventofcode.com/2023/day/23) | :star::star: | [Solution](./Day23/Program.cs) |  |
+ | [Day 24:  Never Tell Me The Odds](https://adventofcode.com/2023/day/24) | :star: | [Solution](./Day24/Program.cs) |  |
 
